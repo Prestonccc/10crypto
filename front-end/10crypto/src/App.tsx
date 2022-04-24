@@ -1,43 +1,52 @@
-import React, { Component, useState} from 'react';
+import React, { Component, useState, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import useSWR from "swr"
-import {Box} from "@mantine/core"
+import { useQuery } from 'react-fetching-library';
+// import { List } from '@mantine/core';
 import List from './components/List'
-
-export const ENDPOINT = 'htttp://localhost:8080'
-const fetcher =(url: string) => 
-fetch(`${ENDPOINT}/home`).then((r) => r.json());
-
+import { render } from '@testing-library/react';
 
 interface IState {
   crypto: {
+    id: number
     code: string
     name: string
     price: number
-    url: string
   }[]
 }
 
 function App() {
-  // const {data,mutate} = useSWR('home',fetcher) 
-
-
-
-  const [crypto, setCrypto] = useState<IState["crypto"]>([
-    {
-      code: "BTC",
-      name: "Bitcoin",
-      price: 55853.679688,
-      url: "https://bitcoin.org/img/icons/opengraph.png?1648897668"
+  const [data, setData] = useState<IState["crypto"]>([])
+  const [isFetching, setFetch] = useState(false)
+  // if (!isFetching) {
+  //   <div>
+  //     <h1>LOADING...PLEASE WAIT...</h1>
+  //   </div>
+  //   }
+  useEffect(() => {
+    async function fetchData() {
+    setFetch(true)
+    await fetch("http://localhost:8080/home")
+    .then(res => res.json()
+    .then(setData))
+    setFetch(false)
     }
-  ])
+    fetchData()
+  },[])
 
+  if (isFetching) {
+    return(
+      <div className="App">
+        <h1>...Data Loading...</h1>
+        <h1>It takes a while, please wait...</h1>
+      </div>
+    )
+  }
+   
   return (
     <div className="App">
-      <h1>Ten Crypto</h1>
-      {/* <List crypto={crypto}/> */}
-      {/* <Box>{JSON.stringify(data)}</Box> */}
+      <h1>Top Ten Crypto</h1>
+      <List crypto={data}/>
     </div>
   );
 }

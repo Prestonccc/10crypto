@@ -6,9 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	//"github.com/go-chi/chi/v5/middleware"
-
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 	_ "github.com/lib/pq"
 )
 
@@ -33,6 +32,7 @@ type cryptoValue struct {
 }
 
 type crypto struct {
+	ID    int     `json:"id"`
 	Code  string  `json:"code"`
 	Name  string  `json:"name"`
 	Price float32 `json:"price"`
@@ -40,7 +40,7 @@ type crypto struct {
 
 func Getcoinprice(coin string, currency string) cryptoValue {
 	coinPrice := fmt.Sprintf(coinbaseAPI, coin, currency)
-	fmt.Println(coinPrice)
+	// fmt.Println(coinPrice)
 	resp, err := http.Get(coinPrice)
 	if err != nil {
 		log.Fatalln(err)
@@ -90,7 +90,7 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 		// 	code  string
 		// 	price float32
 		// )
-		if err := row.Scan(&cpt.Name, &cpt.Code, &cpt.Price); err != nil {
+		if err := row.Scan(&cpt.ID, &cpt.Name, &cpt.Code, &cpt.Price); err != nil {
 			panic(err)
 		}
 		cpts = append(cpts, cpt)
@@ -102,7 +102,7 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 	if err := row.Err(); err != nil {
 		panic(err)
 	}
-	jsonData, err := json.MarshalIndent(cpts, "", "\t")
+	jsonData, err := json.Marshal(cpts)
 	if err != nil {
 		panic(err)
 	}
@@ -110,6 +110,7 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonData)
+	db.Close()
 }
 
 func main() {
@@ -124,11 +125,11 @@ func main() {
 	// })
 	// http.ListenAndServe(":3000", r)
 
-	// router.Use(cors.Handler(cors.Options{
-	// 	AllowedOrigins: []string{"http://localhost:3000"},
-	// 	AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-	// 	AllowedHeaders: []string{"Origin, Contect-Type, Accept"},
-	// }))
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"Origin, Contect-Type, Accept"},
+	}))
 
 	router.Get("/home", homepage)
 

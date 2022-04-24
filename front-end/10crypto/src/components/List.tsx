@@ -5,7 +5,6 @@ interface IProps {
       code: string
       name: string
       price: number
-      url: string
     }[]
   }
 
@@ -16,11 +15,11 @@ const List: React.FC<IProps> = ({ crypto }) => {
             return (
                 <li className="List">
                     <div className="List-header">
-                        <img className="List-img" src={eachcrypto.url}/>
-                        <h2>{eachcrypto.code}</h2>
+                        <h2>{eachcrypto.name}</h2>
                     </div>
-                    <p>{eachcrypto.price}</p>
-                    <p className="List-note">{eachcrypto.name}</p>
+                    <p>{eachcrypto.code}</p>
+                    <p className="List-note">AUD <b>${eachcrypto.price}</b></p>
+                    <button>Trade</button>
                 </li>
             )
         })
