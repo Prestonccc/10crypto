@@ -52,7 +52,6 @@ func Getcoinprice(coin string, currency string) cryptoValue {
 	return cResp
 }
 func exchange() {
-	//sqlStatement := `INSERT INTO cryptoinfo (name, base_currency, quote_currency) VALUES ($1, $2, $3)`
 	sqlStatement := `INSERT INTO cryptoinfo (code, name, price) VALUES ($1, $2, $3)`
 	db := dbConnection()
 	products := getProducts()
@@ -85,19 +84,11 @@ func cryptoApi(w http.ResponseWriter, r *http.Request) {
 
 	for row.Next() {
 		cpt := crypto{}
-		// var (
-		// 	name  string
-		// 	code  string
-		// 	price float32
-		// )
+
 		if err := row.Scan(&cpt.ID, &cpt.Name, &cpt.Code, &cpt.Price); err != nil {
 			panic(err)
 		}
 		cpts = append(cpts, cpt)
-
-		// fmt.Printf("%s, %s", name, code)
-		// //fmt.Sprintf("%f",price)
-		// json.NewEncoder(w).Encode(name + ", " + code + ", " + fmt.Sprintf("%f", price))
 	}
 	if err := row.Err(); err != nil {
 		panic(err)
@@ -114,17 +105,7 @@ func cryptoApi(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// bitcoin := Getcoinprice("BTC", "AUD")
-	// fmt.Println(reflect.TypeOf(bitcoin.Data.Amount))
-	// etheur := Getcoinprice("ETH", "AUD")
-	// fmt.Printf("%s: %s\n", etheur.Data.Currency, etheur.Data.Amount)
 	router := chi.NewRouter()
-	// r.Use(middleware.Logger)
-	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("welcome"))
-	// })
-	// http.ListenAndServe(":3000", r)
-
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
