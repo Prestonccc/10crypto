@@ -19,13 +19,13 @@ const List: React.FC<IProps> = ({ crypto }) => {
                     </div>
                     <p>{eachcrypto.code}</p>
                     <p className="List-note">AUD <b>${eachcrypto.price}</b></p>
-                    <button>Trade</button>
+                    <button className="button">Trade</button>
                 </li>
             )
         })
     }
     return (
-        <ul>
+        <ul className="List-container">
             {renderList()}
         </ul>
     )

@@ -72,7 +72,7 @@ func exchange() {
 		}
 	}
 }
-func homepage(w http.ResponseWriter, r *http.Request) {
+func cryptoApi(w http.ResponseWriter, r *http.Request) {
 	exchange()
 	db := dbConnection()
 	row, er := db.Query("SELECT* FROM cryptoinfo order by price::numeric desc limit 10")
@@ -131,7 +131,7 @@ func main() {
 		AllowedHeaders: []string{"Origin, Contect-Type, Accept"},
 	}))
 
-	router.Get("/home", homepage)
+	router.Get("/api/crypto", cryptoApi)
 
 	fmt.Println("Server is listening on port 8080")
 

@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,500;0,700;1,200;1,400&display=swap');
+
+
 .App {
-  text-align: center;
+  font-family: montserrat, sans-serif;
+  /* background-color: #24252A; */
 }
 
 .App-logo {
@@ -12,7 +16,11 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.App-load{
+  text-align: center;
+  margin: 50px 0px;
+  font-weight: 400;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -36,14 +44,78 @@
     transform: rotate(360deg);
   }
 }
+/* ------------------------------------------------------ NAV ------------------------------------------------------ */
+.nav-container {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #24252A;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px 10%;
+}
+
+.App-name {
+  margin-right: auto;
+  font-size: 25px;
+  color: #edf0f1;
+}
+
+.nav-container li,a,button {
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  text-decoration: none;
+  border: none;
+  background: none;
+}
+
+.nav-links{
+  list-style: none;
+}
+
+.nav-links li{
+  display: inline-block;
+  padding: 0px 20px;
+}
+
+.nav-links li a{
+  transition: all 0.3s ease 0s;
+}
+
+.nav-links li a:hover{
+  color: #0088A9;
+}
+
+.nav-container button {
+  margin-left: 20px;
+  padding: 9px 25px;
+  background-color: rgba(0,136,169,1);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  font-family: montserrat, sans-serif;
+}
+
+.nav-container button:hover {
+  background-color: rgba(0,136,169,0.8);
+}
+
+/* ------------------------------------------------------ LIST ------------------------------------------------------ */
+.List-container{
+  margin-top: 20px;
+}
 
 .List {
   list-style: none;
   display: flex;
   align-items: center;
-  width: 50rem;
-  margin: 0rem auto;
+  width: 60rem;
+  margin: 0.5rem auto;
   border: 0.1rem solid rgba(0, 0, 0, 0.233);
+  border-radius: 8px;
   padding: 1rem;
   justify-content: space-between;
 }
@@ -56,6 +128,9 @@
 .List-header h2 {
   color: rgb(37, 36, 36)
 }
+.List p{
+  font-size: 18px;
+}
 
 .List-img {
   width: 4rem;
@@ -65,28 +140,41 @@
 }
 
 .List-note {
-  width: 30%;
   text-align: left;
+  /* color: white; */
 }
 
-.AddToList {
-  display: flex;
-  flex-direction: column;
-  width: 30rem;
-  margin: 5rem auto
-}
-
-.AddToList-input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  margin: 0.3rem 0rem
-}
-
-.AddToList-btn {
-  padding: 0.5rem;
+.button{
+  appearance: none;
+  background: none;
+  border: none;
+  outline: none;
+  color: #F7931A;
+  border: 1.5px solid #F7931A;
+  border-radius: 6px;
+  font-family: montserrat, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  transition: 0.2s;
+  padding: 7px 15px;
   cursor: pointer;
-  background-color: #0b5468;
-  font-weight: 700;
+}
+
+.button:hover{
   color: white;
-  border: none
+  background-color: #F7931A;
+}
+
+/* ------------------------------------------------------ FOOTER ------------------------------------------------------ */
+footer {
+  font-size: 16px;
+  background: #24252A;
+  color: white;
+  margin-top: 30px;
+}
+footer p{
+  font-weight: 500;
+  text-align: center;
+  padding: 30px 0;
+  margin: 0;
 }

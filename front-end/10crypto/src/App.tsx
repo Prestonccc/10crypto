@@ -5,6 +5,8 @@ import { useQuery } from 'react-fetching-library';
 // import { List } from '@mantine/core';
 import List from './components/List'
 import { render } from '@testing-library/react';
+import Nav from './components/Nav';
+import Footer from './components/Footer'
 
 interface IState {
   crypto: {
@@ -18,15 +20,10 @@ interface IState {
 function App() {
   const [data, setData] = useState<IState["crypto"]>([])
   const [isFetching, setFetch] = useState(false)
-  // if (!isFetching) {
-  //   <div>
-  //     <h1>LOADING...PLEASE WAIT...</h1>
-  //   </div>
-  //   }
   useEffect(() => {
     async function fetchData() {
     setFetch(true)
-    await fetch("http://localhost:8080/home")
+    await fetch("http://localhost:8080/api/crypto")
     .then(res => res.json()
     .then(setData))
     setFetch(false)
@@ -37,16 +34,18 @@ function App() {
   if (isFetching) {
     return(
       <div className="App">
-        <h1>...Data Loading...</h1>
-        <h1>It takes a while, please wait...</h1>
+        <Nav />
+        <h1 className="App-load">...Data Loading...<br/>
+        It takes a while, please wait...</h1>
       </div>
     )
   }
    
   return (
-    <div className="App">
-      <h1>Top Ten Crypto</h1>
+    <div className="App">      
+      <Nav />    
       <List crypto={data}/>
+      <Footer />
     </div>
   );
 }
