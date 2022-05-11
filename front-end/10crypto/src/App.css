@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,500;0,700;1,200;1,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,500;0,600;0,700;1,200;1,400&display=swap');
 
 .App {
   font-family: montserrat, sans-serif;
+  min-height: 100%;
   /* background-color: #24252A; */
 }
 
@@ -104,6 +104,17 @@
 }
 
 /* ------------------------------------------------------ LIST ------------------------------------------------------ */
+.content{
+  padding-bottom: 60px;
+}
+
+.circle{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}
+
 .List-container{
   margin-top: 20px;
 }
@@ -112,7 +123,7 @@
   list-style: none;
   display: flex;
   align-items: center;
-  width: 60rem;
+  width: 75%;
   margin: 0.5rem auto;
   border: 0.1rem solid rgba(0, 0, 0, 0.233);
   border-radius: 8px;
@@ -149,8 +160,8 @@
   background: none;
   border: none;
   outline: none;
-  color: #F7931A;
-  border: 1.5px solid #F7931A;
+  color: #ff7f50;
+  border: 1.5px solid #ff7f50;
   border-radius: 6px;
   font-family: montserrat, sans-serif;
   font-size: 20px;
@@ -162,11 +173,17 @@
 
 .button:hover{
   color: white;
-  background-color: #F7931A;
+  background-color: #ff7f50;
 }
 
 /* ------------------------------------------------------ FOOTER ------------------------------------------------------ */
 footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
   font-size: 16px;
   background: #24252A;
   color: white;
@@ -175,6 +192,205 @@ footer {
 footer p{
   font-weight: 500;
   text-align: center;
-  padding: 30px 0;
+  padding: 20px 0;
   margin: 0;
+}
+
+/* ------------------------------------------------------ LOGIN ------------------------------------------------------ */
+.login {
+  border: 2px solid #333;
+  border-radius: 10px;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  color:#24252A;
+}
+
+.login h1{
+  text-align: center;
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid silver;
+}
+
+.login form{
+  padding: 0 40px;
+  box-sizing: border-box
+}
+
+form .txt_field {
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin: 30px 0;
+}
+
+.txt_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+
+  border: none;
+  background: none;
+  outline: none;
+}
+.txt_field label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #7e7e7e;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-weight: 500;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.txt_field span::before{
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width:100%;
+  height: 2px;
+  background:#2691d9;
+}
+
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label{
+  top: -5px;
+  color: #2691d9;
+}
+
+.pass{
+  margin: -5px 0 20px 5px;
+  color: #a6a6a6;
+  cursor: pointer;
+}
+
+.pass:hover{
+  text-decoration: underline;
+}
+
+input[type="submit"]{
+  width:100%;
+  height:50px;
+  border: 1px solid;
+  background: rgba(0,136,169,0.8);
+  border-radius: 25px;
+  font-family: montserrat, sans-serif;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline:none;
+}
+
+input[type="submit"]:hover{
+  background: rgba(0,136,169,1);
+  border-color: rgba(0,136,169,0.8);;
+  transition: .5s;
+}
+
+.signup_link{
+  margin:30px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666666;
+}
+
+.signup_link button{
+  font-family: montserrat, sans-serif;
+  color: #2691d9;
+  text-decoration: none;
+}
+  
+.signup_link button:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------ DETAILS ------------------------------------------------------ */
+.detail-container,
+.not-found{
+  /* border: 2px solid #333;
+  border-radius: 10px; */
+  border: none;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  color:#24252A;
+}
+.cryptodetail{
+  text-align: center;
+}
+
+.cryptodetail input[type="submit"]{
+  width:100%;
+  height:50px;
+  border: 1px solid;
+  background: #ff7f50;
+  border-radius: 25px;
+  font-family: montserrat, sans-serif;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline:none;
+}
+
+.cryptodetail input[type="submit"]:hover{
+  background: #ff6348;
+  border-color: #ff6348;;
+  transition: .5s;
+}
+
+.cryptodetail .txt_field input:focus ~ label,
+.cryptodetail .txt_field input:valid ~ label{
+  top: -5px;
+  color: #ff7f50;
+}
+.not-found{
+  text-align: center;
+}
+
+.not-found button{
+  width:60%;
+  height:50px;
+  border: 1px solid;
+  background: #ff7f50;
+  border-radius: 25px;
+  font-family: montserrat, sans-serif;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline:none;
+}
+
+.back {
+  margin-top: 20px;
+  margin-left:10%;
+}
+
+.back button{
+  color:#ff7f50;
+  font-family: montserrat, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #ff7f50;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.back button:hover{
+  color:white;
+  background-color: #ff7f50;
+  transition: 0.1s;
 }

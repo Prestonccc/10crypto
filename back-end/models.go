@@ -26,3 +26,33 @@ type Product struct {
 		Max_withdrawal  float32  `json:"max_withdrawal_amount"`
 	}
 }
+
+type data struct {
+	Amount   string `json:"amount"`
+	Currency string `json:"currency"`
+}
+
+type cryptoValue struct {
+	Data data `json:"data"`
+}
+
+type crypto struct {
+	ID    int     `json:"id"`
+	Code  string  `json:"code"`
+	Name  string  `json:"name"`
+	Price float32 `json:"price"`
+}
+
+type UserInfo struct {
+	ID       string  `json:"user_id"`
+	Username string  `json:"username"`
+	Email    string  `json:"email"`
+	Password string  `json:"password"`
+	Balance  float32 `json:"balance"`
+}
+
+type LoginInfo struct {
+	Email    string  `json:"email"`
+	Password string  `json:"password"`
+	Balance  float32 `json:"balance"`
+}
