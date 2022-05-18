@@ -1,4 +1,3 @@
-import { StringMappingType } from "typescript"
 
 export interface reg_user{
     Username: string
@@ -10,9 +9,19 @@ export interface reg_user{
 }
 
 export interface log_user{
+    Id: string
 	Username: string
 	Email: string
 	Password: string
     Balance: number
     isLoggedin: boolean
 }
+
+export interface IState {
+    crypto: {
+      id: number
+      code: string
+      name: string
+      price: number
+    }[]
+  }

@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"path"
+	"strconv"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -54,8 +55,16 @@ func Getcoinprice(coin string, currency string) cryptoValue {
 	return cResp
 }
 func exchange() {
-	sqlStatement := `INSERT INTO cryptoinfo (code, name, price) VALUES ($1, $2, $3)`
 	db := dbConnection()
+	// _, drop_err := db.Exec(`Drop table if exists cryptoinfo`)
+	// if drop_err != nil {
+	// 	panic(drop_err)
+	// }
+	// _, create_err := db.Exec(`Create table cryptoinfo (id serial primary key, code varchar(50) not null, name varchar(30) not null, price varchar(50) not null)`)
+	// if create_err != nil {
+	// 	panic(create_err)
+	// }
+	sqlStatement := `INSERT INTO cryptoinfo (code, name, price) VALUES ($1, $2, $3)`
 	products := getProducts()
 	_, clear_err := db.Exec(`TRUNCATE cryptoinfo`)
 	if clear_err != nil {
@@ -65,7 +74,7 @@ func exchange() {
 	for i := 0; i < len(products); i++ {
 		exchange := Getcoinprice(products[i].ID, "AUD")
 		if exchange.Data.Amount != "" {
-			fmt.Println(products[i].ID, products[i].NAME, exchange.Data.Amount)
+			// fmt.Println(products[i].ID, products[i].NAME, exchange.Data.Amount)
 			_, err := db.Exec(sqlStatement, products[i].NAME, products[i].ID, exchange.Data.Amount)
 			if err != nil {
 				panic(err)
@@ -147,6 +156,7 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	// fmt.Println(user.Username)
+	// Create table userinfo (user_id serial primary key, username varchar(50) not null, email varchar(255) not null, password varchar(50) not null, balance float(8) not null)
 	db := dbConnection()
 	err = db.QueryRow(`SELECT user_id FROM userinfo WHERE username = $1 AND email = $2 `, user.Username, user.Email).Scan(&user.ID)
 	if err != nil {
@@ -199,7 +209,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		err = json.Unmarshal(body, &user)
 		if err != nil {
-			print(err)
+			panic(err)
 		}
 		fmt.Printf("userinfo : %+v\n", user)
 		// ----------------------
@@ -233,7 +243,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 		for row.Next() {
 			u := UserInfo{}
 
-			if err := row.Scan(&u.ID, &u.Email, &u.Username, &u.Password, &u.Balance); err != nil {
+			if err := row.Scan(&u.ID, &u.Username, &u.Email, &u.Password, &u.Balance); err != nil {
 				panic(err)
 			}
 			users = append(users, u)
@@ -256,6 +266,80 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func topupHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		var topup Topup
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			panic(err)
+		}
+		err = json.Unmarshal(body, &topup)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("topupinfo : %+v\n", topup)
+		fmt.Printf("topupinfo : %+v\n", topup.Topup)
+
+		db := dbConnection()
+		row, err := db.Query(`SELECT balance FROM userinfo WHERE username = $1 AND email = $2`, topup.Username, topup.Email)
+		if err != nil {
+			panic(err)
+		}
+		var tempnumber float32
+		for row.Next() {
+			if err := row.Scan(&tempnumber); err != nil {
+				panic(err)
+			}
+		}
+		inputnumber, err := strconv.ParseFloat(topup.Topup, 32)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(tempnumber)
+		if err != nil {
+			fmt.Println("Unauthorised!")
+			json.NewEncoder(w).Encode("Unauthorised topup!")
+			return
+		} else {
+			sqlStatement := `UPDATE userinfo SET balance = $1 WHERE username = $2 AND email = $3`
+			_, err = db.Exec(sqlStatement, tempnumber+float32(inputnumber), topup.Username, topup.Email)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+		row, err = db.Query(`SELECT username, email, balance FROM userinfo WHERE username = $1 AND email = $2`, topup.Username, topup.Email)
+		if err != nil {
+			panic(err)
+		}
+
+		tp := make([]Topup, 0)
+		for row.Next() {
+			t := Topup{}
+
+			if err := row.Scan(&t.Username, &t.Email, &t.Topup); err != nil {
+				panic(err)
+			}
+			tp = append(tp, t)
+		}
+		if err := row.Err(); err != nil {
+			panic(err)
+		}
+		jsonData, err := json.Marshal(tp)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(string(jsonData))
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		json.NewEncoder(w).Encode(tp)
+
+		db.Close()
+
+	}
+}
+
 func main() {
 	router := chi.NewRouter()
 	router.Use(cors.AllowAll().Handler)
@@ -273,6 +357,7 @@ func main() {
 	router.Get("/api/crypto/{code}", cryptoDetail)
 	router.Post("/api/crypto/signup", signupHandler)
 	router.Post("/api/crypto/signin", signinHandler)
+	router.Post("/api/crypto/topup", topupHandler)
 	fmt.Println("Server is listening on port 8080")
 
 	log.Fatal(http.ListenAndServe(":8080", router))

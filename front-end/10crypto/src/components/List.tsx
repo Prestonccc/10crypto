@@ -23,7 +23,7 @@ const List = () => {
     }
     return (
         <ul className="List-container">
-            {isFetching && <div className="circle"><CircularProgress/></div>}
+            {isFetching && <div className="circle"><p>Don't switch to other pages.<br/>Real-time rate, please wait...</p><CircularProgress/></div>}
             {renderList()}
         </ul>
     )

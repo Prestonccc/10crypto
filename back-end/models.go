@@ -56,3 +56,9 @@ type LoginInfo struct {
 	Password string  `json:"password"`
 	Balance  float32 `json:"balance"`
 }
+
+type Topup struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Topup    string `json:"balance"`
+}

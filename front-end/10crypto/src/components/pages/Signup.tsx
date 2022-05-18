@@ -12,7 +12,7 @@ export const Signup = () => {
     const {isRegistered, setUsernameReg, setEmailReg, setPasswordReg, handleSubmit, onSubmit} = useContainer(StoreContainer)
     if(isRegistered){
         return (
-        <Navigate to="/"/>)
+        <Navigate to="/login"/>)
     }
     return(
         <div className="login">

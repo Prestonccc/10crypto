@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import { useContainer } from "unstated-next";
 import { StoreContainer } from "./others/globalState";
 
@@ -14,11 +14,19 @@ export default function Nav(){
                 <h1 className="App-name">CRYPTO PRES</h1>
                 <nav>
                     <ul className="nav-links">
-                        <Link to="/">Home</Link>
+                        <li><Link to="/">Home</Link></li>
                     </ul>
                 </nav>
-                <button>Log Out</button>
-                <p>{store.usernameReg}</p>
+                <div className="user-link"><Link to="/userDetail">{store.initUser.Username}</Link></div>
+                <Link to="/login">
+                    <button onClick={()=>{
+                        store.setisLoggedin(false);
+                        alert("Log out successfully!")
+                        }}>
+                        Log Out
+                    </button>
+                </Link>
+                
         </div>
         )
     }

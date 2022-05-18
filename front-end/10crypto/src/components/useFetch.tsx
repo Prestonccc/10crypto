@@ -1,21 +1,14 @@
 import {useState, useEffect} from 'react'
-
-interface IState {
-    crypto: {
-      id: number
-      code: string
-      name: string
-      price: number
-    }[]
-  }
-
-
+import { IState } from './others/interface'
+import { StoreContainer } from './others/globalState'
+import { useContainer } from 'unstated-next'
 
 
 const useFetch = (url) =>{
     const [data, setData] = useState<IState["crypto"]>([])
     const [isFetching, setFetch] = useState(true)
     const [error, setError] = useState(null)
+    // const {setCrypto} = useContainer(StoreContainer)
 
     useEffect(() => {
       const abortCont = new AbortController();
@@ -40,6 +33,8 @@ const useFetch = (url) =>{
 
       return () => abortCont.abort();
     },[url])
+    // setCrypto(data)
+    
 
     return {data,error,isFetching}
 }

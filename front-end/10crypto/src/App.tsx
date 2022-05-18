@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import { Signup } from './components/pages/Signup';
 import { NotFound } from './components/pages/Notfound';
 import { StoreContainer } from './components/others/globalState';
+import { UserDetail } from './components/pages/UserDetail';
 export default class App extends Component{
   constructor(props) {
     super(props);
@@ -30,6 +31,7 @@ export default class App extends Component{
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/crypto/:code" element={<CryptoDetail />} />
+            <Route path="/userDetail" element={<UserDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>  
         </div>
